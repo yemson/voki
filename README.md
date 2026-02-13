@@ -1,36 +1,43 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Voki
 
-## Getting Started
+트레이딩 복기 웹 서비스입니다.  
+기술 스택은 Next.js(App Router) + Supabase입니다.
 
-First, run the development server:
+## Local 실행
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+pnpm install
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+기본 주소: `http://localhost:3000`
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 환경 변수
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+`.env.local`에 아래 값을 설정합니다.
 
-## Learn More
+```bash
+NEXT_PUBLIC_SUPABASE_URL=...
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=...
+```
 
-To learn more about Next.js, take a look at the following resources:
+## 인증 라우트
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `/login`
+- `/signup`
+- `/dashboard` (로그인 필요)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Supabase 마이그레이션 적용
 
-## Deploy on Vercel
+```bash
+pnpm dlx supabase@latest login
+pnpm dlx supabase@latest link --project-ref <PROJECT_REF>
+pnpm dlx supabase@latest db push
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+인증/프로필/RLS 관련 SQL은 `supabase/migrations`에 있습니다.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 기타
+
+- UI는 shadcn 컴포넌트를 사용합니다.
+- 세션 가드는 `proxy.ts` + `lib/supabase/proxy.ts`에서 처리합니다.
