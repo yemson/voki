@@ -15,7 +15,7 @@ import {
 import { Field, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 
-interface LoginFormProps extends React.ComponentProps<"div"> {
+interface SignupFormProps extends React.ComponentProps<"div"> {
   action: (
     prevState: { error?: string } | null,
     formData: FormData,
@@ -27,25 +27,30 @@ function SubmitButton() {
 
   return (
     <Button type="submit" className="w-full" disabled={pending}>
-      {pending ? "Logging in..." : "Login"}
+      {pending ? "Creating account..." : "Create account"}
     </Button>
   );
 }
 
-export function LoginForm({ className, action, ...props }: LoginFormProps) {
+export function SignupForm({ className, action, ...props }: SignupFormProps) {
   const [state, formAction] = useActionState(action, null);
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
         <CardHeader>
-          <CardTitle>Login</CardTitle>
-          <CardDescription>Enter your email below</CardDescription>
+          <CardTitle>Sign up</CardTitle>
+          <CardDescription>Create your trading journal account</CardDescription>
         </CardHeader>
 
         <CardContent>
           <form action={formAction}>
             <FieldGroup>
+              <Field>
+                <FieldLabel htmlFor="full_name">Full name (optional)</FieldLabel>
+                <Input id="full_name" name="full_name" type="text" />
+              </Field>
+
               <Field>
                 <FieldLabel htmlFor="email">Email</FieldLabel>
                 <Input id="email" name="email" type="email" required />
@@ -53,13 +58,17 @@ export function LoginForm({ className, action, ...props }: LoginFormProps) {
 
               <Field>
                 <FieldLabel htmlFor="password">Password</FieldLabel>
-                <Input id="password" name="password" type="password" required />
+                <Input
+                  id="password"
+                  name="password"
+                  type="password"
+                  minLength={8}
+                  required
+                />
               </Field>
 
               {state?.error && (
-                <p className="text-sm text-red-500 text-center">
-                  {state.error}
-                </p>
+                <p className="text-sm text-red-500 text-center">{state.error}</p>
               )}
 
               <Field>
@@ -68,9 +77,9 @@ export function LoginForm({ className, action, ...props }: LoginFormProps) {
 
               <Field>
                 <p className="text-sm text-center text-muted-foreground">
-                  Don&apos;t have an account?{" "}
-                  <Link href="/signup" className="underline underline-offset-4">
-                    Sign up
+                  Already have an account?{" "}
+                  <Link href="/login" className="underline underline-offset-4">
+                    Login
                   </Link>
                 </p>
               </Field>
