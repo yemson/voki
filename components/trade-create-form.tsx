@@ -43,15 +43,22 @@ export function TradeCreateForm({
     <Card>
       <CardHeader>
         <CardTitle>새 거래 기록</CardTitle>
-        <CardDescription>한 건씩 차분히 남기면 복기가 쉬워져요.</CardDescription>
+        <CardDescription>
+          한 건씩 차분히 남기면 복기가 쉬워져요.
+        </CardDescription>
       </CardHeader>
 
       <CardContent>
         <form action={formAction}>
           <FieldGroup>
             <Field>
-              <FieldLabel htmlFor="symbol">티커</FieldLabel>
-              <Input id="symbol" name="symbol" placeholder="예: AAPL" required />
+              <FieldLabel htmlFor="symbol">종목</FieldLabel>
+              <Input
+                id="symbol"
+                name="symbol"
+                placeholder="예: AAPL"
+                required
+              />
             </Field>
 
             <Field>
@@ -70,22 +77,43 @@ export function TradeCreateForm({
 
             <Field>
               <FieldLabel htmlFor="entry_price">진입가</FieldLabel>
-              <Input id="entry_price" name="entry_price" type="number" step="0.0001" />
+              <Input
+                id="entry_price"
+                name="entry_price"
+                type="number"
+                step="0.0001"
+              />
             </Field>
 
             <Field>
               <FieldLabel htmlFor="exit_price">청산가</FieldLabel>
-              <Input id="exit_price" name="exit_price" type="number" step="0.0001" />
+              <Input
+                id="exit_price"
+                name="exit_price"
+                type="number"
+                step="0.0001"
+              />
             </Field>
 
             <Field>
               <FieldLabel htmlFor="quantity">수량</FieldLabel>
-              <Input id="quantity" name="quantity" type="number" step="0.0001" required />
+              <Input
+                id="quantity"
+                name="quantity"
+                type="number"
+                step="0.0001"
+                required
+              />
             </Field>
 
             <Field>
               <FieldLabel htmlFor="entry_at">진입 시각</FieldLabel>
-              <Input id="entry_at" name="entry_at" type="datetime-local" required />
+              <Input
+                id="entry_at"
+                name="entry_at"
+                type="datetime-local"
+                required
+              />
             </Field>
 
             <Field>

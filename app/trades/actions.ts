@@ -85,7 +85,9 @@ export async function createTrade(
     return { error: "로그인이 필요해요." };
   }
 
-  const symbol = String(formData.get("symbol") ?? "").trim().toUpperCase();
+  const symbol = String(formData.get("symbol") ?? "")
+    .trim()
+    .toUpperCase();
   const direction = String(formData.get("direction") ?? "") as TradeDirection;
   const quantity = parsePositiveNumber(formData.get("quantity"));
   const entryPrice = parsePositiveNumber(formData.get("entry_price"));
@@ -97,7 +99,7 @@ export async function createTrade(
   const emotionIds = parseIdArray(formData.getAll("emotion_ids"));
 
   if (!symbol) {
-    return { error: "티커를 입력해 주세요." };
+    return { error: "종목을 입력해 주세요." };
   }
   if (!["long", "short"].includes(direction)) {
     return { error: "방향을 선택해 주세요." };
@@ -140,7 +142,7 @@ export async function createTrade(
 
   const tickerId = await getOrCreateTickerId(symbol);
   if (!tickerId) {
-    return { error: "티커를 저장하지 못했어요. 잠시 후 다시 시도해 주세요." };
+    return { error: "종목을 저장하지 못했어요. 잠시 후 다시 시도해 주세요." };
   }
 
   const { data: trade, error: tradeError } = await supabase

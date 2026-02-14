@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   BarChart3,
   BookOpenText,
@@ -25,6 +26,12 @@ import {
 } from "@/components/ui/sidebar";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const pathname = usePathname();
+  const isDashboard = pathname === "/dashboard";
+  const isTradeNew = pathname === "/trades/new";
+  const isTrades =
+    pathname === "/trades" || (pathname.startsWith("/trades/") && !isTradeNew);
+
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
@@ -47,6 +54,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               <SidebarMenuItem>
                 <SidebarMenuButton
                   asChild
+                  isActive={isTradeNew}
                   tooltip="새 거래"
                   className="bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground min-w-8 duration-200 ease-linear"
                 >
@@ -57,7 +65,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 </SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>
-                <SidebarMenuButton asChild tooltip="대시보드">
+                <SidebarMenuButton asChild isActive={isDashboard} tooltip="대시보드">
                   <Link href="/dashboard">
                     <BarChart3 />
                     <span>대시보드</span>
@@ -65,8 +73,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 </SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>
-                <SidebarMenuButton asChild tooltip="트레이드 리스트">
-                  <Link href="/dashboard#trades-list">
+                <SidebarMenuButton asChild isActive={isTrades} tooltip="트레이드 리스트">
+                  <Link href="/trades">
                     <BookOpenText />
                     <span>트레이드 리스트</span>
                   </Link>

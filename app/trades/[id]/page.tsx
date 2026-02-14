@@ -33,7 +33,12 @@ function calculatePnl(
   exitPrice: number | null,
   quantity: number | null,
 ) {
-  if (!direction || entryPrice === null || exitPrice === null || quantity === null) {
+  if (
+    !direction ||
+    entryPrice === null ||
+    exitPrice === null ||
+    quantity === null
+  ) {
     return null;
   }
   if (direction === "long") {
@@ -70,7 +75,7 @@ export default async function TradeDetailPage(props: {
 
       <Card>
         <CardHeader>
-          <CardTitle>{trade.symbol ?? "티커 없음"}</CardTitle>
+          <CardTitle>{trade.symbol ?? "종목 없음"}</CardTitle>
           <CardDescription>
             {trade.direction === "long" ? "롱" : "숏"} 거래 ·{" "}
             {formatDateTime(trade.createdAt)}
@@ -90,7 +95,9 @@ export default async function TradeDetailPage(props: {
           <div>
             <p className="mb-1 font-medium">전략 태그</p>
             <p className="text-muted-foreground">
-              {trade.strategies.length > 0 ? trade.strategies.join(", ") : "없음"}
+              {trade.strategies.length > 0
+                ? trade.strategies.join(", ")
+                : "없음"}
             </p>
           </div>
 
@@ -103,7 +110,9 @@ export default async function TradeDetailPage(props: {
 
           <div>
             <p className="mb-1 font-medium">메모</p>
-            <p className="text-muted-foreground">{trade.notes || "메모 없음"}</p>
+            <p className="text-muted-foreground">
+              {trade.notes || "메모 없음"}
+            </p>
           </div>
         </CardContent>
         <CardFooter />

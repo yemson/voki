@@ -31,6 +31,13 @@ export interface TradeListItem {
   symbol: string | null;
 }
 
+export interface TradeListPage {
+  items: TradeListItem[];
+  totalCount: number;
+  page: number;
+  pageSize: number;
+}
+
 export interface TradeDetail {
   id: string;
   direction: TradeDirection | null;

@@ -139,15 +139,7 @@ function buildMonthlyWinRateSeries(trades: TradeListItem[]) {
   });
 }
 
-export default async function DashboardPage(props: {
-  searchParams: Promise<{
-    from?: string;
-    to?: string;
-    direction?: "all" | "long" | "short";
-    symbol?: string;
-  }>;
-}) {
-  const searchParams = await props.searchParams;
+export default async function DashboardPage() {
   const supabase = await createClient();
   const {
     data: { user },
@@ -158,13 +150,12 @@ export default async function DashboardPage(props: {
   }
 
   const filters: TradeFilterInput = {
-    from: searchParams.from,
-    to: searchParams.to,
-    direction: searchParams.direction ?? "all",
-    symbol: searchParams.symbol ?? "",
+    direction: "all",
+    symbol: "",
   };
 
   const trades = await getTrades(filters);
+  const recentTrades = trades.slice(0, 5);
   const pnlTrades = filterLastThreeMonths(trades);
   const winRateTrades = filterLastSixMonths(trades);
   const cumulative = buildCumulativeRateSeries(pnlTrades);
@@ -185,7 +176,7 @@ export default async function DashboardPage(props: {
           <div className="flex w-full items-center gap-2 px-4 lg:px-6">
             <SidebarTrigger className="-ml-1" />
             <div>
-              <h1 className="text-base font-medium">트레이딩 대시보드</h1>
+              <h1 className="text-base font-medium">대시보드</h1>
             </div>
           </div>
         </header>
@@ -197,91 +188,15 @@ export default async function DashboardPage(props: {
               monthlyWinRate={monthlyWinRate}
             />
 
-            <Card>
-              <CardHeader>
-                <CardTitle>필터</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <form className="grid grid-cols-1 gap-3 md:grid-cols-5">
-                  <div>
-                    <label
-                      htmlFor="from"
-                      className="mb-1 block text-xs text-muted-foreground"
-                    >
-                      시작일
-                    </label>
-                    <input
-                      id="from"
-                      name="from"
-                      type="date"
-                      defaultValue={filters.from}
-                      className="border-input bg-background h-9 w-full rounded-md border px-3 text-sm"
-                    />
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="to"
-                      className="mb-1 block text-xs text-muted-foreground"
-                    >
-                      종료일
-                    </label>
-                    <input
-                      id="to"
-                      name="to"
-                      type="date"
-                      defaultValue={filters.to}
-                      className="border-input bg-background h-9 w-full rounded-md border px-3 text-sm"
-                    />
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="direction"
-                      className="mb-1 block text-xs text-muted-foreground"
-                    >
-                      방향
-                    </label>
-                    <select
-                      id="direction"
-                      name="direction"
-                      defaultValue={filters.direction ?? "all"}
-                      className="border-input bg-background h-9 w-full rounded-md border px-3 text-sm"
-                    >
-                      <option value="all">전체</option>
-                      <option value="long">롱</option>
-                      <option value="short">숏</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="symbol"
-                      className="mb-1 block text-xs text-muted-foreground"
-                    >
-                      티커
-                    </label>
-                    <input
-                      id="symbol"
-                      name="symbol"
-                      type="text"
-                      defaultValue={filters.symbol}
-                      placeholder="예: AAPL"
-                      className="border-input bg-background h-9 w-full rounded-md border px-3 text-sm"
-                    />
-                  </div>
-                  <div className="flex items-end">
-                    <Button type="submit" className="w-full">
-                      필터 적용
-                    </Button>
-                  </div>
-                </form>
-              </CardContent>
-            </Card>
-
             <Card id="trades-list">
-              <CardHeader>
-                <CardTitle>트레이드 리스트</CardTitle>
+              <CardHeader className="flex flex-row items-center justify-between gap-2">
+                <CardTitle>최근 트레이드 5개</CardTitle>
+                <Button asChild size="sm" variant="outline">
+                  <Link href="/trades">전체 보기</Link>
+                </Button>
               </CardHeader>
               <CardContent>
-                {trades.length === 0 ? (
+                {recentTrades.length === 0 ? (
                   <p className="text-sm text-muted-foreground">
                     아직 기록된 거래가 없어요. 첫 거래를 남겨 보세요.
                   </p>
@@ -290,7 +205,7 @@ export default async function DashboardPage(props: {
                     <table className="w-full min-w-205 text-sm">
                       <thead>
                         <tr className="border-b text-left text-muted-foreground">
-                          <th className="py-2">티커</th>
+                          <th className="py-2">종목</th>
                           <th className="py-2">방향</th>
                           <th className="py-2">진입가</th>
                           <th className="py-2">청산가</th>
@@ -301,7 +216,7 @@ export default async function DashboardPage(props: {
                         </tr>
                       </thead>
                       <tbody>
-                        {trades.map((trade) => {
+                        {recentTrades.map((trade) => {
                           const pnl = calcPnl(trade);
                           return (
                             <tr key={trade.id} className="border-b">

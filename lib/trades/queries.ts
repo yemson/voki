@@ -8,6 +8,7 @@ import type {
   TradeDetailRow,
   TradeFilterInput,
   TradeListItem,
+  TradeListPage,
   TradeListRow,
 } from "@/lib/trades/types";
 
@@ -52,7 +53,19 @@ export async function getTradeOptions() {
 }
 
 export async function getTrades(filters: TradeFilterInput) {
+  const result = await getTradesPage(filters, 1, 200);
+  return result.items;
+}
+
+export async function getTradesPage(
+  filters: TradeFilterInput,
+  page: number,
+  pageSize: number,
+) {
   const supabase = await createClient();
+  const safePage = Number.isFinite(page) && page > 0 ? Math.floor(page) : 1;
+  const safePageSize =
+    Number.isFinite(pageSize) && pageSize > 0 ? Math.floor(pageSize) : 10;
 
   let tickerIdFilter: string[] | null = null;
 
@@ -65,7 +78,12 @@ export async function getTrades(filters: TradeFilterInput) {
 
     tickerIdFilter = (tickers ?? []).map((ticker) => ticker.id);
     if (tickerIdFilter.length === 0) {
-      return [] as TradeListItem[];
+      return {
+        items: [] as TradeListItem[],
+        totalCount: 0,
+        page: safePage,
+        pageSize: safePageSize,
+      } as TradeListPage;
     }
   }
 
@@ -83,6 +101,7 @@ export async function getTrades(filters: TradeFilterInput) {
         symbol
       )
     `,
+    { count: "exact" },
   );
 
   if (filters.direction && filters.direction !== "all") {
@@ -101,25 +120,33 @@ export async function getTrades(filters: TradeFilterInput) {
     query = query.in("ticker_id", tickerIdFilter);
   }
 
-  const { data } = await query
+  const from = (safePage - 1) * safePageSize;
+  const to = from + safePageSize - 1;
+
+  const { data, count } = await query
     .order("entry_at", { ascending: false, nullsFirst: false })
     .order("created_at", { ascending: false })
-    .limit(200);
+    .range(from, to);
 
   const rows = (data ?? []) as TradeListRow[];
 
-  return rows.map((row) => ({
-    id: row.id,
-    direction: row.direction,
-    entryPrice: toNumberOrNull(row.entry_price),
-    exitPrice: toNumberOrNull(row.exit_price),
-    quantity: toNumberOrNull(row.quantity),
-    entryAt: row.entry_at,
-    createdAt: row.created_at,
-    symbol: Array.isArray(row.tickers)
-      ? row.tickers[0]?.symbol ?? null
-      : row.tickers?.symbol ?? null,
-  })) as TradeListItem[];
+  return {
+    items: rows.map((row) => ({
+      id: row.id,
+      direction: row.direction,
+      entryPrice: toNumberOrNull(row.entry_price),
+      exitPrice: toNumberOrNull(row.exit_price),
+      quantity: toNumberOrNull(row.quantity),
+      entryAt: row.entry_at,
+      createdAt: row.created_at,
+      symbol: Array.isArray(row.tickers)
+        ? row.tickers[0]?.symbol ?? null
+        : row.tickers?.symbol ?? null,
+    })) as TradeListItem[],
+    totalCount: count ?? 0,
+    page: safePage,
+    pageSize: safePageSize,
+  } as TradeListPage;
 }
 
 export async function getTradeDetail(tradeId: string) {
