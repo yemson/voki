@@ -158,7 +158,7 @@ export default async function TradesPage(props: {
           <div className="flex w-full items-center gap-2 px-4 lg:px-6">
             <SidebarTrigger className="-ml-1" />
             <div>
-              <h1 className="text-base font-medium">트레이드 리스트</h1>
+              <h1 className="text-base font-medium">거래 리스트</h1>
             </div>
           </div>
         </header>
@@ -247,7 +247,7 @@ export default async function TradesPage(props: {
             <Card>
               <CardHeader className="space-y-3">
                 <div className="flex flex-row items-center justify-between gap-2">
-                  <CardTitle>전체 트레이드</CardTitle>
+                  <CardTitle>전체 거래</CardTitle>
                   <Button asChild size="sm" variant="outline">
                     <Link href="/trades/new">새 거래 작성</Link>
                   </Button>
@@ -279,8 +279,14 @@ export default async function TradesPage(props: {
                       <tbody>
                         {trades.map((trade) => {
                           const pnl = calcPnl(trade);
+                          const rowClassName =
+                            pnl !== null && pnl < 0
+                              ? "border-b bg-red-50/70"
+                              : pnl !== null && pnl > 0
+                                ? "border-b bg-emerald-50/70"
+                                : "border-b";
                           return (
-                            <tr key={trade.id} className="border-b">
+                            <tr key={trade.id} className={rowClassName}>
                               <td className="py-2">{trade.symbol ?? "-"}</td>
                               <td className="py-2">
                                 {trade.direction === "long" ? "롱" : "숏"}

@@ -11,7 +11,7 @@ export default async function NewTradePage() {
     <main className="mx-auto w-full max-w-2xl p-6 md:p-10">
       <div className="mb-4">
         <Button asChild variant="ghost">
-          <Link href="/dashboard">대시보드로 돌아가기</Link>
+          <Link href="/trades">뒤로가기</Link>
         </Button>
       </div>
       <TradeCreateForm

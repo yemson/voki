@@ -7,7 +7,6 @@ import {
   BookOpenText,
   CircleUserRound,
   Plus,
-  Settings,
 } from "lucide-react";
 
 import { logout } from "@/app/actions/auth";
@@ -73,19 +72,19 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 </SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>
-                <SidebarMenuButton asChild isActive={isTrades} tooltip="트레이드 리스트">
+                <SidebarMenuButton asChild isActive={isTrades} tooltip="거래 리스트">
                   <Link href="/trades">
                     <BookOpenText />
-                    <span>트레이드 리스트</span>
+                    <span>거래 리스트</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
-              <SidebarMenuItem>
+              {/* <SidebarMenuItem>
                 <SidebarMenuButton tooltip="설정">
                   <Settings />
                   <span>설정</span>
                 </SidebarMenuButton>
-              </SidebarMenuItem>
+              </SidebarMenuItem> */}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>

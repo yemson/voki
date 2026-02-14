@@ -38,6 +38,52 @@ export interface TradeListPage {
   pageSize: number;
 }
 
+export interface CumulativePoint {
+  index: number;
+  label: string;
+  rate: number;
+}
+
+export interface MonthlyWinRatePoint {
+  month: string;
+  winRate: number;
+  total: number;
+  win: number;
+}
+
+export interface EquityPoint {
+  id: string;
+  date: string;
+  cumulativePnl: number;
+  cumulativeCapital: number;
+  equity: number;
+  rate: number;
+}
+
+export interface RiskSummary {
+  maxLossStreak: number;
+  latestLossStreak: number;
+  maxDrawdownAmount: number;
+  maxDrawdownRate: number;
+  averageLossAmount: number;
+  averageLossAmountLast30Days: number;
+  lossTradeCount: number;
+}
+
+export interface RiskAlert {
+  id: "loss-streak" | "drawdown" | "avg-loss";
+  title: string;
+  description: string;
+  href: string;
+  ctaLabel: string;
+}
+
+export interface RiskThresholds {
+  maxLossStreak: number;
+  maxDrawdownRate: number;
+  averageLossMultiplier: number;
+}
+
 export interface TradeDetail {
   id: string;
   direction: TradeDirection | null;

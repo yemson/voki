@@ -68,7 +68,7 @@ export default async function TradeDetailPage(props: {
     <main className="mx-auto w-full max-w-2xl p-6 md:p-10">
       <div className="mb-4 flex items-center justify-between gap-2">
         <Button asChild variant="ghost">
-          <Link href="/dashboard">대시보드로 돌아가기</Link>
+          <Link href="/trades">뒤로가기</Link>
         </Button>
         <TradeDeleteForm tradeId={trade.id} action={deleteTrade} />
       </div>
