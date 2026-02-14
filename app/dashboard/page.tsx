@@ -25,20 +25,20 @@ export default async function DashboardPage() {
     <main className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
       <Card className="w-full max-w-lg">
         <CardHeader>
-          <CardTitle>Dashboard</CardTitle>
+          <CardTitle>대시보드</CardTitle>
           <CardDescription>
-            Logged in as <span className="font-medium">{user.email}</span>
+            <span className="font-medium">{user.email}</span> 계정으로 로그인했어요
           </CardDescription>
         </CardHeader>
         <CardContent>
           <p className="text-sm text-muted-foreground">
-            인증이 완료되었습니다. 이제 트레이딩 복기 기능을 이어서 구현하면 됩니다.
+            준비가 끝났어요. 이제 매매 복기를 기록해 보세요.
           </p>
         </CardContent>
         <CardFooter>
           <form action={logout} className="w-full">
             <Button type="submit" variant="outline" className="w-full">
-              Logout
+              로그아웃
             </Button>
           </form>
         </CardFooter>

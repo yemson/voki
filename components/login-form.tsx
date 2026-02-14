@@ -27,7 +27,7 @@ function SubmitButton() {
 
   return (
     <Button type="submit" className="w-full" disabled={pending}>
-      {pending ? "Logging in..." : "Login"}
+      {pending ? "로그인 중이에요" : "로그인"}
     </Button>
   );
 }
@@ -39,20 +39,20 @@ export function LoginForm({ className, action, ...props }: LoginFormProps) {
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
         <CardHeader>
-          <CardTitle>Login</CardTitle>
-          <CardDescription>Enter your email below</CardDescription>
+          <CardTitle>로그인</CardTitle>
+          <CardDescription>이메일과 비밀번호를 입력해 주세요</CardDescription>
         </CardHeader>
 
         <CardContent>
           <form action={formAction}>
             <FieldGroup>
               <Field>
-                <FieldLabel htmlFor="email">Email</FieldLabel>
+                <FieldLabel htmlFor="email">이메일</FieldLabel>
                 <Input id="email" name="email" type="email" required />
               </Field>
 
               <Field>
-                <FieldLabel htmlFor="password">Password</FieldLabel>
+                <FieldLabel htmlFor="password">비밀번호</FieldLabel>
                 <Input id="password" name="password" type="password" required />
               </Field>
 
@@ -68,9 +68,9 @@ export function LoginForm({ className, action, ...props }: LoginFormProps) {
 
               <Field>
                 <p className="text-sm text-center text-muted-foreground">
-                  Don&apos;t have an account?{" "}
+                  아직 계정이 없나요?{" "}
                   <Link href="/signup" className="underline underline-offset-4">
-                    Sign up
+                    회원가입
                   </Link>
                 </p>
               </Field>

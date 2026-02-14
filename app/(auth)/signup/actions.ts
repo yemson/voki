@@ -13,12 +13,16 @@ export async function signup(
   const password = formData.get("password") as string;
   const fullName = (formData.get("full_name") as string | null)?.trim();
 
+  if (!fullName) {
+    return { error: "이름을 입력해 주세요." };
+  }
+
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
     options: {
       data: {
-        full_name: fullName || null,
+        full_name: fullName,
       },
     },
   });

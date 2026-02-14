@@ -27,7 +27,7 @@ function SubmitButton() {
 
   return (
     <Button type="submit" className="w-full" disabled={pending}>
-      {pending ? "Creating account..." : "Create account"}
+      {pending ? "가입 중이에요" : "회원가입"}
     </Button>
   );
 }
@@ -39,25 +39,31 @@ export function SignupForm({ className, action, ...props }: SignupFormProps) {
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
         <CardHeader>
-          <CardTitle>Sign up</CardTitle>
-          <CardDescription>Create your trading journal account</CardDescription>
+          <CardTitle>회원가입</CardTitle>
+          <CardDescription>복기 기록을 시작해 볼까요?</CardDescription>
         </CardHeader>
 
         <CardContent>
           <form action={formAction}>
             <FieldGroup>
               <Field>
-                <FieldLabel htmlFor="full_name">Full name (optional)</FieldLabel>
-                <Input id="full_name" name="full_name" type="text" />
+                <FieldLabel htmlFor="full_name">이름</FieldLabel>
+                <Input
+                  id="full_name"
+                  name="full_name"
+                  type="text"
+                  minLength={2}
+                  required
+                />
               </Field>
 
               <Field>
-                <FieldLabel htmlFor="email">Email</FieldLabel>
+                <FieldLabel htmlFor="email">이메일</FieldLabel>
                 <Input id="email" name="email" type="email" required />
               </Field>
 
               <Field>
-                <FieldLabel htmlFor="password">Password</FieldLabel>
+                <FieldLabel htmlFor="password">비밀번호</FieldLabel>
                 <Input
                   id="password"
                   name="password"
@@ -77,9 +83,9 @@ export function SignupForm({ className, action, ...props }: SignupFormProps) {
 
               <Field>
                 <p className="text-sm text-center text-muted-foreground">
-                  Already have an account?{" "}
+                  이미 계정이 있나요?{" "}
                   <Link href="/login" className="underline underline-offset-4">
-                    Login
+                    로그인
                   </Link>
                 </p>
               </Field>
